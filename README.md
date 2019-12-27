@@ -32,14 +32,14 @@ Running a FullNode
 The master branch is actively developed and regularly committed to, and it can become unstable.  
 To compile a stable (production) release use any of the release tags form version 3.0.x.x and upwards.  
 
-git clone https://github.com/x42protocol/X42-FullNode.git
+git clone https://github.com/x42protocol/X42-BlockCore.git
 cd X42-BlockCore\src\x42.x42D\
 
 dotnet run
 
 Getting Started Guide
 -----------
-More details on getting started are available [here](https://github.com/x42protocol/X42-FullNode/blob/master/Documentation/getting-started.md)
+More details on getting started are available [here](https://github.com/x42protocol/X42-BlockCore/tree/master/Documentation/getting-started.md)
 
 Development
 -----------
@@ -51,7 +51,7 @@ Check this guides for more info:
 
 There is a lot to do and we welcome contributions from developers and testers who want to gain some Blockchain experience.
 
-You can find tasks on the [issues](https://github.com/x42protocol/X42-FullNode/issues) tab or visit us on [discord](https://discordapp.com/invite/tdN4ue6).
+You can find tasks on the [issues](https://github.com/x42protocol/X42-BlockCore/issues) tab or visit us on [discord](https://discordapp.com/invite/tdN4ue6).
 
 Testing
 -------
