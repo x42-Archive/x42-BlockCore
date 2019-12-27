@@ -1,11 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
+using NBitcoin;
 using NBitcoin.BouncyCastle.Math;
 using NBitcoin.Rules;
 
-namespace NBitcoin
+namespace Stratis.Bitcoin.Networks
 {
-    public class Consensus : IConsensus
+    public class X42Consensus : IConsensus
     {
         /// <inheritdoc />
         public long CoinbaseMaturity { get; set; }
@@ -52,10 +53,20 @@ namespace NBitcoin
 
         public bool PowAllowMinDifficultyBlocks { get; }
 
-        /// <inheritdoc />
+        /// <summary>
+        /// If <c>true</c> disables checking the next block's difficulty (work required) target on a Proof-Of-Stake network.
+        /// <para>
+        /// This can be used in tests to enable fast mining of blocks.
+        /// </para>
+        /// </summary>
         public bool PosNoRetargeting { get; }
 
-        /// <inheritdoc />
+        /// <summary>
+        /// If <c>true</c> disables checking the next block's difficulty (work required) target on a Proof-Of-Work network.
+        /// <para>
+        /// This can be used in tests to enable fast mining of blocks.
+        /// </para>
+        /// </summary>
         public bool PowNoRetargeting { get; }
 
         public uint256 HashGenesisBlock { get; }
@@ -64,7 +75,9 @@ namespace NBitcoin
         public uint256 MinimumChainWork { get; }
 
         public int MinerConfirmationWindow { get; set; }
-        
+
+        public int RuleChangeActivationThreshold { get; set; }
+
         /// <inheritdoc />
         public int CoinType { get; }
 
@@ -75,17 +88,36 @@ namespace NBitcoin
         /// <inheritdoc />
         public int LastPOWBlock { get; set; }
 
-        /// <inheritdoc />
-        public bool IsProofOfStake { get; }
+        /// <summary>
+        /// This flag will restrict the coinbase in a POS network to be empty.
+        /// For legacy POS the coinbase is required to be empty.
+        /// </summary>
+        /// <remarks>
+        /// Some implementations will put extra data in the coinbase (for example the witness commitment)
+        /// To allow such data to be in the coinbase we use this flag, a POS network that already has that limitation will use the coinbase input instead.
+        /// </remarks>
+        public bool PosEmptyCoinbase { get; set; }
 
         /// <inheritdoc />
-        public bool PosEmptyCoinbase { get; set; }
+        public bool IsProofOfStake { get; }
 
         /// <inheritdoc />
         public uint256 DefaultAssumeValid { get; }
 
         /// <inheritdoc />
         public ConsensusFactory ConsensusFactory { get; }
+
+        /// <inheritdoc />
+        public List<IIntegrityValidationConsensusRule> IntegrityValidationRules { get; set; }
+
+        /// <inheritdoc />
+        public List<IHeaderValidationConsensusRule> HeaderValidationRules { get; set; }
+
+        /// <inheritdoc />
+        public List<IPartialValidationConsensusRule> PartialValidationRules { get; set; }
+
+        /// <inheritdoc />
+        public List<IFullValidationConsensusRule> FullValidationRules { get; set; }
 
         /// <inheritdoc />
         public ConsensusRules ConsensusRules { get; }
@@ -100,7 +132,7 @@ namespace NBitcoin
         /// <inheritdoc />
         public Money LastProofOfStakeRewardHeight { get; }
 
-        public Consensus(
+        public X42Consensus(
             ConsensusFactory consensusFactory,
             ConsensusOptions consensusOptions,
             int coinType,
@@ -129,10 +161,18 @@ namespace NBitcoin
             uint256 minimumChainWork,
             bool isProofOfStake,
             int lastPowBlock,
-            BigInteger proofOfStakeLimit,
             BigInteger proofOfStakeLimitV2,
-            Money proofOfStakeReward)
+            Money proofOfStakeReward,
+            Money proofOfStakeRewardAfterSubsidyLimit,
+            long subsidyLimit,
+            Money lastProofOfStakeRewardHeight,
+            bool posEmptyCoinbase
+            )
         {
+            this.IntegrityValidationRules = new List<IIntegrityValidationConsensusRule>();
+            this.HeaderValidationRules = new List<IHeaderValidationConsensusRule>();
+            this.PartialValidationRules = new List<IPartialValidationConsensusRule>();
+            this.FullValidationRules = new List<IFullValidationConsensusRule>();
             this.CoinbaseMaturity = coinbaseMaturity;
             this.PremineReward = premineReward;
             this.PremineHeight = premineHeight;
@@ -158,14 +198,17 @@ namespace NBitcoin
             this.MinimumChainWork = minimumChainWork;
             this.MinerConfirmationWindow = minerConfirmationWindow;
             this.CoinType = coinType;
-            this.ProofOfStakeLimit = proofOfStakeLimit;
             this.ProofOfStakeLimitV2 = proofOfStakeLimitV2;
             this.LastPOWBlock = lastPowBlock;
             this.IsProofOfStake = isProofOfStake;
             this.DefaultAssumeValid = defaultAssumeValid;
             this.ConsensusFactory = consensusFactory;
+            this.ProofOfStakeRewardAfterSubsidyLimit = proofOfStakeRewardAfterSubsidyLimit;
+            this.SubsidyLimit = subsidyLimit;
+            this.LastProofOfStakeRewardHeight = lastProofOfStakeRewardHeight;
             this.ConsensusRules = new ConsensusRules();
             this.MempoolRules = new List<Type>();
+            this.PosEmptyCoinbase = posEmptyCoinbase;
         }
     }
 }

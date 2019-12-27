@@ -1,10 +1,10 @@
 ## Stratis DNS Crawler 
-The Stratis DNS Crawler provides a list of Stratis full nodes that have recently been active via a custom DNS server.
+The x42 DNS Crawler provides a list of x42 full nodes that have recently been active via a custom DNS server.
 
 ### Prerequisites
 
 To install and run the DNS Server, you need
-* [.NET Core 2.0](https://www.microsoft.com/net/download/core)
+* [.NET Core 2.2](https://www.microsoft.com/net/download/core)
 * [Git](https://git-scm.com/)
 
 ## Build instructions
@@ -12,36 +12,36 @@ To install and run the DNS Server, you need
 ### Get the repository and its dependencies
 
 ```
-git clone https://github.com/stratisproject/StratisBitcoinFullNode.git  
-cd StratisBitcoinFullNode
+git clone https://github.com/x42protocol/X42-BlockCore.git
+cd X42-BlockCore
 git submodule update --init --recursive
 ```
 
 ### Build and run the code
-With this node, you can run the DNS Server in isolation or as a Stratis node with DNS functionality:
+With this node, you can run the DNS Server in isolation or as a x42 node with DNS functionality:
 
-1. To run a <b>Stratis</b> node <b>only</b> on <b>MainNet</b>, do
+1. To run a <b>x42</b> node <b>only</b> on <b>MainNet</b>, do
 ```
-cd Stratis.StratisDnsD
-dotnet run -dnslistenport=5399 -dnshostname=dns.stratisplatform.com -dnsnameserver=ns1.dns.stratisplatform.com -dnsmailbox=admin@stratisplatform.com
+cd x42.x42DnsD
+dotnet run -dnslistenport=5399 -dnshostname=x42seed.host -dnsnameserver=node01.x42seed.host -dnsmailbox=admin@x42.tech
 ```  
 
-2. To run a <b>Stratis</b> node and <b>full node</b> on <b>MainNet</b>, do
+2. To run a <b>x42</b> node and <b>full node</b> on <b>MainNet</b>, do
 ```
-cd Stratis.StratisDnsD
-dotnet run -dnsfullnode -dnslistenport=5399 -dnshostname=dns.stratisplatform.com -dnsnameserver=ns1.dns.stratisplatform.com -dnsmailbox=admin@stratisplatform.com
+cd x42.x42DnsD
+dotnet run -dnsfullnode -dnslistenport=5399 -dnshostname=x42seed.host -dnsnameserver=node01.x42seed.host -dnsmailbox=admin@x42.tech
 ```  
 
-3. To run a <b>Stratis</b> node <b>only</b> on <b>TestNet</b>, do
+3. To run a <b>x42</b> node <b>only</b> on <b>TestNet</b>, do
 ```
-cd Stratis.StratisDnsD
-dotnet run -testnet -dnslistenport=5399 -dnshostname=dns.stratisplatform.com -dnsnameserver=ns1.dns.stratisplatform.com -dnsmailbox=admin@stratisplatform.com
+cd x42.x42DnsD
+dotnet run -testnet -dnslistenport=5399 -dnshostname=x42seed.host -dnsnameserver=node01.x42seed.host -dnsmailbox=admin@x42.tech
 ```  
 
-4. To run a <b>Stratis</b> node and <b>full node</b> on <b>TestNet</b>, do
+4. To run a <b>x42</b> node and <b>full node</b> on <b>TestNet</b>, do
 ```
-cd Stratis.StratisDnsD
-dotnet run -testnet -dnsfullnode -dnslistenport=5399 -dnshostname=dns.stratisplatform.com -dnsnameserver=ns1.dns.stratisplatform.com -dnsmailbox=admin@stratisplatform.com
+cd x42.x42DnsD
+dotnet run -testnet -dnsfullnode -dnslistenport=5399 -dnshostname=x42seed.host -dnsnameserver=node01.x42seed.host -dnsmailbox=admin@x42.tech
 ```  
 
 ### Command-line arguments
@@ -60,22 +60,22 @@ Given the following settings for the Stratis DNS Server:
 | Argument      | Value                             |
 | ------------- | --------------------------------- |
 | dnslistenport | 53                                |
-| dnshostname   | stratisdns.stratisplatform.com    |
-| dnsnameserver | ns.stratisdns.stratisplatform.com |
+| dnshostname   | x42seed.host					    |
+| dnsnameserver | node01.x42seed.host				|
 
 You should have NS and A record in your ISP DNS records for your DNS host domain:
 
 | Type     | Hostname                          | Data                              |
 | -------- | --------------------------------- | --------------------------------- |
-| NS       | stratisdns.stratisplatform.com    | ns.stratisdns.stratisplatform.com |
-| A        | ns.stratisdns.stratisplatform.com | 192.168.1.2                       |
+| NS       | x42seed.host					   | x42seed.host					   |
+| A        | node01.x42seed.host			   | 192.168.1.2                       |
 
 To verify the Stratis DNS Server is running with these settings run:
 
 ```
-dig +qr -p 53 stratisdns.stratisplatform.com
+dig +qr -p 53 node01.x42seed.host
 ```  
 or
 ```
-nslookup stratisdns.stratisplatform.com
+nslookup node01.x42seed.host
 ```

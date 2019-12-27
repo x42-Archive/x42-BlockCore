@@ -62,9 +62,9 @@ namespace Stratis.Bitcoin.Features.Api
         {
             var info = new Info()
             {
-                Title = "Stratis Node API",
+                Title = "x42 Node API",
                 Version = description.ApiVersion.ToString(),
-                Description = "Access to the Stratis Node's core features."
+                Description = "Access to the x42 Node's core features."
             };
 
             if (info.Version.Contains("dev"))

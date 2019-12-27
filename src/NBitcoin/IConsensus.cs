@@ -131,5 +131,14 @@ namespace NBitcoin
 
         /// <summary>Group of mempool validation rules used by the given network.</summary>
         List<Type> MempoolRules { get; set; }
+
+        Money ProofOfStakeRewardAfterSubsidyLimit { get; }
+
+        long SubsidyLimit { get; }
+
+        /// <summary>
+        /// When to stop the rewards for PoS.
+        /// </summary>
+        Money LastProofOfStakeRewardHeight { get; }
     }
 }

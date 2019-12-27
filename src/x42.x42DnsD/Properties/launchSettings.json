@@ -1,0 +1,15 @@
+{
+  "profiles": {
+    "x42.x42DnsD": {
+      "commandName": "Project"
+    },
+    "x42.x42DnsD Test": {
+      "commandName": "Project",
+      "commandLineArgs": "-testnet -dnshostname=x42seed.host -dnsnameserver=node01.x42seed.host -dnsmailbox=admin@x42.tech"
+    },
+    "x42.x42DnsD FullNode Test": {
+      "commandName": "Project",
+      "commandLineArgs": "-testnet -dnsfullnode -dnshostname=x42seed.host -dnsnameserver=node01.x42seed.host -dnsmailbox=admin@x42.tech"
+    }
+  }
+}
