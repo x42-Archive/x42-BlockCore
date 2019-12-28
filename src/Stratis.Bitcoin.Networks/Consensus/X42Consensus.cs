@@ -132,6 +132,9 @@ namespace Stratis.Bitcoin.Networks
         /// <inheritdoc />
         public Money LastProofOfStakeRewardHeight { get; }
 
+        /// <inheritdoc />
+        public bool BlocksWithoutRewards { get; }
+
         public X42Consensus(
             ConsensusFactory consensusFactory,
             ConsensusOptions consensusOptions,
@@ -166,6 +169,7 @@ namespace Stratis.Bitcoin.Networks
             Money proofOfStakeRewardAfterSubsidyLimit,
             long subsidyLimit,
             Money lastProofOfStakeRewardHeight,
+            bool blocksWithoutRewards,
             bool posEmptyCoinbase
             )
         {
@@ -208,6 +212,7 @@ namespace Stratis.Bitcoin.Networks
             this.LastProofOfStakeRewardHeight = lastProofOfStakeRewardHeight;
             this.ConsensusRules = new ConsensusRules();
             this.MempoolRules = new List<Type>();
+            this.BlocksWithoutRewards = blocksWithoutRewards;
             this.PosEmptyCoinbase = posEmptyCoinbase;
         }
     }

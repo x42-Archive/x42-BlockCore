@@ -140,5 +140,10 @@ namespace NBitcoin
         /// When to stop the rewards for PoS.
         /// </summary>
         Money LastProofOfStakeRewardHeight { get; }
+
+        /// <summary>
+        /// For a max supply, you will eventually start producing blocks without rewards.
+        /// </summary>
+        bool BlocksWithoutRewards { get; }
     }
 }

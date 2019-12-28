@@ -454,5 +454,21 @@ namespace Stratis.Bitcoin.Features.Consensus.Rules.CommonRules
                    (this.Consensus.LastProofOfStakeRewardHeight > 0) &&
                    (height <= this.Consensus.LastProofOfStakeRewardHeight);
         }
+
+        /// <summary>
+        /// Determines whether the reward is acceptable for the network
+        /// </summary>
+        /// <param name="reward">PoS Reward.</param>
+        protected void CheckReward(Money reward)
+        {
+            if (reward == Money.Zero)
+            {
+                if (this.Consensus.BlocksWithoutRewards is false)
+                {
+                    this.Logger.LogTrace("(-)[REWARD_CHECK_FAILED");
+                    ConsensusErrors.ZeroRewardViolation.Throw();
+                }
+            }
+        }
     }
 }

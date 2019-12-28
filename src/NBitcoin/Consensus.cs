@@ -100,6 +100,9 @@ namespace NBitcoin
         /// <inheritdoc />
         public Money LastProofOfStakeRewardHeight { get; }
 
+        /// <inheritdoc />
+        public bool BlocksWithoutRewards { get; }
+
         public Consensus(
             ConsensusFactory consensusFactory,
             ConsensusOptions consensusOptions,

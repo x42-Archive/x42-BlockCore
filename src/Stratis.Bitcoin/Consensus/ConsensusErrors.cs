@@ -145,5 +145,7 @@
         public static ConsensusError BadColdstakeInputs => new ConsensusError("bad-coldstake-inputs", "coldstake inputs contain mismatching scriptpubkeys");
 
         public static ConsensusError BadColdstakeOutputs => new ConsensusError("bad-coldstake-outputs", "coldstake outputs contain unexpected scriptpubkeys");
+
+        public static ConsensusError ZeroRewardViolation => new ConsensusError("reward-not-allowed", "network does not allow blocks without rewards");
     }
 }

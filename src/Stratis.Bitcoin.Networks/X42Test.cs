@@ -116,6 +116,7 @@ namespace Stratis.Bitcoin.Networks
                 subsidyLimit: 100000,
                 proofOfStakeRewardAfterSubsidyLimit: Money.Coins(5),
                 lastProofOfStakeRewardHeight: 1000000,
+                blocksWithoutRewards: true,
                 posEmptyCoinbase: true
             );
 
