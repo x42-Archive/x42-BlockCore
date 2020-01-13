@@ -159,7 +159,7 @@ namespace Stratis.Bitcoin.Features.Wallet
 
             // Create a recipient with a dummy destination address as it's required by NBitcoin's transaction builder.
             List<Recipient> recipients = new[] { new Recipient { Amount = new Money(maxSpendableAmount), ScriptPubKey = new Key().ScriptPubKey } }.ToList();
-            Money fee;
+            Money fee = Money.Zero;
 
             try
             {
@@ -179,7 +179,7 @@ namespace Stratis.Bitcoin.Features.Wallet
                 this.AddFee(context);
 
                 // Throw an exception if this code is reached, as building a transaction without any funds for the fee should always throw an exception.
-                throw new WalletException("This should be unreachable; please find and fix the bug that caused this to be reached.");
+                //throw new WalletException("This should be unreachable; please find and fix the bug that caused this to be reached.");
             }
             catch (NotEnoughFundsException e)
             {
