@@ -1,14 +1,4 @@
-| Windows | Linux | OS X
-| :---- | :------ | :---- |
-[![Windows build status][1]][2] | [![Linux build status][3]][4] | [![OS X build status][5]][6] | 
-
-[1]: https://ci.appveyor.com/api/projects/status/4nc986aalq07vk3t/branch/master?svg=true
-[2]: https://ci.appveyor.com/project/x42/X42-FullNode-UI
-[3]: https://travis-ci.org/x42protocol/X42-FullNode-UI.svg?branch=master
-[4]: https://travis-ci.org/x42protocol/X42-FullNode-UI
-[5]: https://travis-ci.org/x42protocol/X42-FullNode-UI.svg?branch=master
-[6]: https://travis-ci.org/x42protocol/X42-FullNode-UI
-
+[![Build Status](https://github.com/x42protocol/x42-BlockCore/workflows/Build/badge.svg)](https://github.com/block-core/blockcore/actions) [![Publish Packages Status](https://github.com/x42protocol/x42-BlockCore/workflows/Publish%20Packages/badge.svg)](https://github.com/block-core/blockcore/actions)
 
 x42 <sub><sup>(*A blockchain for entrepreneurs*)</sup></sub>
 ===============
