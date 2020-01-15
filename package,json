@@ -1,0 +1,29 @@
+{
+  "name": "x42-BlockCore",
+  "version": "1.0.22",
+  "license": "MIT",
+  "author": {
+    "name": "x42 Protocol",
+    "email": "contact@x42.tech",
+    "url": "http://www.x42.tech"
+  },
+  "description": "x42-BlockCore is an implementation of the Bitcoin protocol in C# on the .NET Core platform. Using the BlockCore project to run the blockchain module for x42.",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/x42protocol/x42-BlockCore.git"
+  },
+  "bugs": {
+    "url": "https://github.com/x42protocol/x42-BlockCore/issues"
+  },
+  "homepage": "https://github.com/x42protocol/x42-BlockCore#readme",
+  "main": "main.js",
+  "scripts": {
+    "version": "node -p \"require('./package.json').version\"",
+    "changelog": "conventional-changelog -i CHANGELOG.md -s -r 0 && git add CHANGELOG.md"
+  },
+  "private": true,
+  "dependencies": {
+    "conventional-changelog-cli": "^2.0.31"
+  },
+  "devDependencies": {}
+}
