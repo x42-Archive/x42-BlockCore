@@ -23,7 +23,7 @@ jobs:
             runtime: "osx-x64"
             extension: ".zip"
         node_version: [12.x]
-        dotnet_version: ['2.1.607']
+        dotnet_version: ['2.2.402']
       fail-fast: false
 
     runs-on: ${{ matrix.os }}
