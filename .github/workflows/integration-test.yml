@@ -16,7 +16,7 @@ jobs:
     runs-on: ${{ matrix.os }}
 
     env:
-      SOLUTION_PATH: 'src/Blockcore.sln'
+      SOLUTION_PATH: 'src/X42.BlockCore.sln'
       BUILD_CONFIGURATION: 'Release'
 
     steps:
