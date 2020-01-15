@@ -84,7 +84,7 @@ jobs:
       run: zip -j -r ${{env.RELEASE_NAME}} ./src/${{env.PROJECT_NAME}}/bin/publish/
 
     - name: Release
-      uses: sondreb/action-release@master
+      uses: DennisAMenace/action-release@master
       with:
         token: ${{ secrets.GITHUB_TOKEN }}
         files: "${{env.RELEASE_PATH}}"
