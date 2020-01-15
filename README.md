@@ -1,4 +1,4 @@
-[![Build Status](https://github.com/x42protocol/x42-BlockCore/workflows/Build/badge.svg)](https://github.com/block-core/blockcore/actions) [![Publish Packages Status](https://github.com/x42protocol/x42-BlockCore/workflows/Publish%20Packages/badge.svg)](https://github.com/block-core/blockcore/actions)
+[![Build Status](https://github.com/x42protocol/x42-BlockCore/workflows/Build/badge.svg)](https://github.com/x42protocol/x42-BlockCore/actions) [![Publish Packages Status](https://github.com/x42protocol/x42-BlockCore/workflows/Publish%20Packages/badge.svg)](https://github.com/x42protocol/x42-BlockCore/actions)
 
 x42 <sub><sup>(*A blockchain for entrepreneurs*)</sup></sub>
 ===============
