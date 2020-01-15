@@ -12,7 +12,7 @@ jobs:
     runs-on: windows-latest
 
     env:
-      SOLUTION_PATH: 'src/Blockcore.sln'
+      SOLUTION_PATH: 'src/X42.BlockCore.sln'
       BUILD_CONFIGURATION: 'Debug'
       NUGET_RELEASE_TYPE: 'alpha'
 
