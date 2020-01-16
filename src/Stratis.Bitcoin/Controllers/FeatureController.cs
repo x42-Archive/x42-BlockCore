@@ -19,6 +19,7 @@ namespace Stratis.Bitcoin.Controllers
         }
     }
 
+    [ApiExplorerSettings(IgnoreApi = true)]
     public abstract class FeatureController : Controller
     {
         protected IFullNode FullNode { get; set; }
