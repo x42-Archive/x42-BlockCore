@@ -21,7 +21,6 @@ using TracerAttributes;
 
 namespace Stratis.Bitcoin.Features.Wallet
 {
-    [ApiController]
     [ApiVersion("1")]
     [Route("api/[controller]")]
     public class WalletRPCController : FeatureController

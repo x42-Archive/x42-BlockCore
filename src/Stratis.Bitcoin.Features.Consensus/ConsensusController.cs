@@ -58,7 +58,7 @@ namespace Stratis.Bitcoin.Features.Consensus
         /// <returns>A <see cref="JsonResult"/> object derived from a list of
         /// <see cref="ThresholdStateModel"/> objects - one per deployment.
         /// Returns an <see cref="ErrorResult"/> if the method fails.</returns>
-        [Route("api/[controller]/deploymentflags")]
+        [Route("deploymentflags")]
         [HttpGet]
         public IActionResult DeploymentFlags()
         {
@@ -85,7 +85,7 @@ namespace Stratis.Bitcoin.Features.Consensus
         /// </summary>
         /// <returns>Json formatted <see cref="uint256"/> hash of the block at the consensus tip. Returns <see cref="IActionResult"/> formatted error if fails.</returns>
         /// <remarks>This is an API implementation of an RPC call.</remarks>
-        [Route("api/[controller]/getbestblockhash")]
+        [Route("getbestblockhash")]
         [HttpGet]
         public IActionResult GetBestBlockHashAPI()
         {
@@ -106,8 +106,8 @@ namespace Stratis.Bitcoin.Features.Consensus
         /// <param name="height">The requested block height.</param>
         /// <returns>A <see cref="uint256"/> hash of the block at the given height. <c>Null</c> if block not found.</returns>
         [ActionName("getblockhash")]
-        [ApiExplorerSettings(IgnoreApi = true)]
         [ActionDescription("Gets the hash of the block at the given height.")]
+        [HttpGet]
         public uint256 GetBlockHashRPC(int height)
         {
             this.logger.LogDebug("GetBlockHash {0}", height);
@@ -131,7 +131,7 @@ namespace Stratis.Bitcoin.Features.Consensus
         /// <param name="height">The height of the block to get the hash for.</param>
         /// <returns>Json formatted <see cref="uint256"/> hash of the block at the given height. <c>Null</c> if block not found. Returns <see cref="IActionResult"/> formatted error if fails.</returns>
         /// <remarks>This is an API implementation of an RPC call.</remarks>
-        [Route("api/[controller]/getblockhash")]
+        [Route("getblockhash")]
         [HttpGet]
         public IActionResult GetBlockHashAPI([FromQuery] int height)
         {
