@@ -1,11 +1,11 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>netcoreapp2.2</TargetFramework>
-    <AssemblyName>Stratis.StratisDnsD</AssemblyName>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+    <AssemblyName>x42.x42DnsD</AssemblyName>
     <OutputType>Exe</OutputType>
-    <PackageId>Stratis.StratisDnsD</PackageId>
-    <RuntimeFrameworkVersion>2.2.7</RuntimeFrameworkVersion>
+    <PackageId>x42.x42DnsD</PackageId>
+    <RuntimeFrameworkVersion>3.1.0</RuntimeFrameworkVersion>
     <GenerateAssemblyConfigurationAttribute>false</GenerateAssemblyConfigurationAttribute>
     <GenerateAssemblyCompanyAttribute>false</GenerateAssemblyCompanyAttribute>
     <GenerateAssemblyProductAttribute>false</GenerateAssemblyProductAttribute>
