@@ -222,6 +222,7 @@ namespace Stratis.Bitcoin.Configuration
             this.Log = new LogSettings();
             this.Log.Load(this.ConfigReader);
             this.LoggerFactory = ExtendedLoggerFactory.Create(this.Log);
+            this.LoggerFactory.AddNLog();
             this.LoggerFactory.LoadNLogConfiguration(this.DataFolder);
             this.Logger = this.LoggerFactory.CreateLogger(typeof(NodeSettings).FullName);
 
