@@ -6,7 +6,7 @@
     <VersionPrefix>1.0.0</VersionPrefix>
     <GeneratePackageOnBuild>False</GeneratePackageOnBuild>
     <Authors>Stratis Group Ltd.</Authors>
-    <PackageId>Blockcore.FodyNlogAdapter</PackageId>
+    <PackageId>x42.FodyNlogAdapter</PackageId>
     <Product>Stratis.FodyNlogAdapter</Product>
   </PropertyGroup>
 
