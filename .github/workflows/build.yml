@@ -88,7 +88,7 @@ jobs:
       with:
         token: ${{ secrets.GITHUB_TOKEN }}
         files: "${{env.RELEASE_PATH}}"
-        draft: false
+        draft: true
         prerelease: true
         body: ''
         name: "x42-BlockCore (Release ${{env.VERSION}})"
