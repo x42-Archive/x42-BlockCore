@@ -68,8 +68,8 @@ jobs:
 
     - name: Package Name
       run: |
-        echo "::set-env name=RELEASE_NAME::${{ env.PROJECT_NAME }}-${{ env.VERSION }}-${{ env.package_runtime }}${{ matrix.extension  }}"
-        echo "::set-env name=RELEASE_PATH::${{ env.PROJECT_NAME }}-${{ env.VERSION }}-${{ env.package_runtime }}${{ matrix.extension  }}"
+        echo "::set-env name=RELEASE_NAME::${{ env.PROJECT_NAME }}-${{ env.VERSION }}-${{ matrix.package_runtime }}${{ matrix.extension  }}"
+        echo "::set-env name=RELEASE_PATH::${{ env.PROJECT_NAME }}-${{ env.VERSION }}-${{ matrix.package_runtime }}${{ matrix.extension  }}"
 
     - name: Package (Linux)
       if: matrix.os == 'ubuntu-latest'
