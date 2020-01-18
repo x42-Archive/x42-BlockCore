@@ -20,7 +20,7 @@ jobs:
             extension: ".tar.gz"
             runtime: "linux-x64"
           - os: macos-latest
-            runtime: "osx-x64"
+            runtime: "mac-x64"
             extension: ".zip"
         node_version: [12.x]
         dotnet_version: ['3.1.101']
