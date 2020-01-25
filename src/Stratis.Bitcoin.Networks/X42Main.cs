@@ -88,12 +88,11 @@ namespace Stratis.Bitcoin.Networks
                 [BuriedDeployments.BIP66] = 0
             };
 
-            var bip9Deployments = new StratisBIP9Deployments()
+            var bip9Deployments = new MainNetBIP9DeploymentsArray
             {
-                [StratisBIP9Deployments.ColdStaking] = new BIP9DeploymentsParameters("ColdStaking", 2,
-                    new DateTime(2018, 12, 1, 0, 0, 0, DateTimeKind.Utc),
-                    new DateTime(2019, 12, 1, 0, 0, 0, DateTimeKind.Utc),
-                    BIP9DeploymentsParameters.DefaultMainnetThreshold)
+                [MainNetBIP9DeploymentsArray.ColdStaking] = new BIP9DeploymentsParameters("ColdStaking", 27, BIP9DeploymentsParameters.AlwaysActive, 999999999, BIP9DeploymentsParameters.AlwaysActive),
+                [MainNetBIP9DeploymentsArray.CSV] = new BIP9DeploymentsParameters("CSV", 0, BIP9DeploymentsParameters.AlwaysActive, 999999999, BIP9DeploymentsParameters.AlwaysActive),
+                [MainNetBIP9DeploymentsArray.Segwit] = new BIP9DeploymentsParameters("Segwit", 1, BIP9DeploymentsParameters.AlwaysActive, 999999999, BIP9DeploymentsParameters.AlwaysActive)
             };
 
             this.Consensus = new X42Consensus(
@@ -160,7 +159,7 @@ namespace Stratis.Bitcoin.Networks
                 { 634600, new CheckpointInfo(new uint256("0x5c0eb47bc96ba437e6d2550aceaa73ad9a4568110de83380d6a7b5f00aee7308"), new uint256("0x12ef7b665a07cef572c9b8d9ee44f41230d6a65e960d372f9396194ed6f51e53")) }
             };
 
-            var encoder = new Bech32Encoder("bc");
+            var encoder = new Bech32Encoder(this.CoinTicker.ToLowerInvariant());
             this.Bech32Encoders = new Bech32Encoder[2];
             this.Bech32Encoders[(int)Bech32Type.WITNESS_PUBKEY_ADDRESS] = encoder;
             this.Bech32Encoders[(int)Bech32Type.WITNESS_SCRIPT_ADDRESS] = encoder;
@@ -231,9 +230,7 @@ namespace Stratis.Bitcoin.Networks
                 // rules that require the store to be loaded (coinview)
                 .Register<LoadCoinviewRule>()
                 .Register<TransactionDuplicationActivationRule>()
-                .Register<PosCoinviewRule>() // implements BIP68, MaxSigOps and BlockReward calculation
-                                             // Place the PosColdStakingRule after the PosCoinviewRule to ensure that all input scripts have been evaluated
-                                             // and that the "IsColdCoinStake" flag would have been set by the OP_CHECKCOLDSTAKEVERIFY opcode if applicable.
+                .Register<PosCoinviewRule>()
                 .Register<PosColdStakingRule>()
                 .Register<SaveCoinviewRule>();
         }

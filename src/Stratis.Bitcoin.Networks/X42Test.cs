@@ -74,12 +74,11 @@ namespace Stratis.Bitcoin.Networks
                 [BuriedDeployments.BIP66] = 0
             };
 
-            var bip9Deployments = new StratisBIP9Deployments()
+            var bip9Deployments = new MainNetBIP9DeploymentsArray
             {
-                [StratisBIP9Deployments.ColdStaking] = new BIP9DeploymentsParameters("ColdStaking", 2,
-                    new DateTime(2018, 12, 1, 0, 0, 0, DateTimeKind.Utc),
-                    new DateTime(2019, 12, 1, 0, 0, 0, DateTimeKind.Utc),
-                    BIP9DeploymentsParameters.DefaultMainnetThreshold)
+                [MainNetBIP9DeploymentsArray.ColdStaking] = new BIP9DeploymentsParameters("ColdStaking", 27, BIP9DeploymentsParameters.AlwaysActive, 999999999, BIP9DeploymentsParameters.AlwaysActive),
+                [MainNetBIP9DeploymentsArray.CSV] = new BIP9DeploymentsParameters("CSV", 0, BIP9DeploymentsParameters.AlwaysActive, 999999999, BIP9DeploymentsParameters.AlwaysActive),
+                [MainNetBIP9DeploymentsArray.Segwit] = new BIP9DeploymentsParameters("Segwit", 1, BIP9DeploymentsParameters.AlwaysActive, 999999999, BIP9DeploymentsParameters.AlwaysActive)
             };
 
             this.Consensus = new X42Consensus(
@@ -131,7 +130,7 @@ namespace Stratis.Bitcoin.Networks
                 { 0, new CheckpointInfo(new uint256("0x6e7c625f36755963d0704dda57fce762c9baf29ea53d7c699e132da614e18d28"), new uint256("0x0000000000000000000000000000000000000000000000000000000000000000")) }, // Genisis
             };
 
-            var encoder = new Bech32Encoder("bc");
+            var encoder = new Bech32Encoder(this.CoinTicker.ToLowerInvariant());
             this.Bech32Encoders = new Bech32Encoder[2];
             this.Bech32Encoders[(int)Bech32Type.WITNESS_PUBKEY_ADDRESS] = encoder;
             this.Bech32Encoders[(int)Bech32Type.WITNESS_SCRIPT_ADDRESS] = encoder;
