@@ -79,16 +79,13 @@ namespace Stratis.Bitcoin.Features.Miner
             if (this.futureDriftRule == null)
                 this.futureDriftRule = this.ConsensusManager.ConsensusRules.GetRule<PosFutureDriftRule>();
 
-            if (entry.Transaction is IPosTransactionWithTime posTrx)
-            {
-                long adjustedTime = this.DateTimeProvider.GetAdjustedTimeAsUnixTimestamp();
+            long adjustedTime = this.DateTimeProvider.GetAdjustedTimeAsUnixTimestamp();
 
-                if (posTrx.Time > adjustedTime + this.futureDriftRule.GetFutureDrift(adjustedTime))
-                    return false;
+            if (entry.Transaction.Time > adjustedTime + this.futureDriftRule.GetFutureDrift(adjustedTime))
+                return false;
 
-                if (posTrx.Time > ((PosTransaction)this.block.Transactions[0]).Time)
-                    return false;
-            }
+            if (entry.Transaction.Time > this.block.Transactions[0].Time)
+                return false;
 
             return base.TestPackage(entry, packageSize, packageSigOpsCost);
         }

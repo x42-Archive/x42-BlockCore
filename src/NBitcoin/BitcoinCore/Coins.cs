@@ -75,10 +75,10 @@ namespace NBitcoin.BitcoinCore
 
         public Coins(Transaction tx, int height)
         {
-            if (tx is IPosTransactionWithTime posTx)
+            if (tx is PosTransaction)
             {
                 this.fCoinStake = tx.IsCoinStake;
-                this.nTime = posTx.Time;
+                this.nTime = tx.Time;
             }
 
             this.CoinBase = tx.IsCoinBase;
@@ -163,8 +163,7 @@ namespace NBitcoin.BitcoinCore
                 // coinbase height
                 stream.ReadWriteAsVarInt(ref this.nHeight);
 
-                // This is an ugly hack that will go away when refactoring coinview
-                if (stream.ConsensusFactory.CreateTransaction() is IPosTransactionWithTime)
+                if (stream.ConsensusFactory is PosConsensusFactory)
                 {
                     stream.ReadWrite(ref this.fCoinStake);
                     stream.ReadWrite(ref this.nTime);
@@ -219,8 +218,7 @@ namespace NBitcoin.BitcoinCore
                 //// coinbase height
                 stream.ReadWriteAsVarInt(ref this.nHeight);
 
-                // This is an ugly hack that will go away when refactoring coinview
-                if (stream.ConsensusFactory.CreateTransaction() is IPosTransactionWithTime)
+                if (stream.ConsensusFactory is PosConsensusFactory)
                 {
                     stream.ReadWrite(ref this.fCoinStake);
                     stream.ReadWrite(ref this.nTime);

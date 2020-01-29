@@ -1153,7 +1153,7 @@ namespace NBitcoin
             }
         }
 
-        protected uint nVersion = 1;
+        private uint nVersion = 1;
 
         public uint Version
         {
@@ -1167,10 +1167,23 @@ namespace NBitcoin
             }
         }
 
+        private uint nTime = Utils.DateTimeToUnixTime(DateTime.UtcNow);
 
-        protected TxInList vin;
-        protected TxOutList vout;
-        protected LockTime nLockTime;
+        public uint Time
+        {
+            get
+            {
+                return this.nTime;
+            }
+            set
+            {
+                this.nTime = value;
+            }
+        }
+
+        private TxInList vin;
+        private TxOutList vout;
+        private LockTime nLockTime;
 
         public Transaction()
         {
@@ -1214,7 +1227,7 @@ namespace NBitcoin
         }
 
         //Since it is impossible to serialize a transaction with 0 input without problems during deserialization with wit activated, we fit a flag in the version to workaround it
-        protected const uint NoDummyInput = (1 << 27);
+        private const uint NoDummyInput = (1 << 27);
 
         #region IBitcoinSerializable Members
 
@@ -1227,6 +1240,10 @@ namespace NBitcoin
             if (!stream.Serializing)
             {
                 stream.ReadWrite(ref this.nVersion);
+
+                // the POS time stamp
+                if (this is PosTransaction)
+                    stream.ReadWrite(ref this.nTime);
 
                 /* Try to read the vin. In case the dummy is there, this will be read as an empty vector. */
                 stream.ReadWrite<TxInList, TxIn>(ref this.vin);
@@ -1276,6 +1293,10 @@ namespace NBitcoin
             {
                 uint version = (witSupported && (this.vin.Count == 0 && this.vout.Count > 0)) ? this.nVersion | NoDummyInput : this.nVersion;
                 stream.ReadWrite(ref version);
+
+                // the POS time stamp
+                if (this is PosTransaction)
+                    stream.ReadWrite(ref this.nTime);
 
                 if (witSupported)
                 {

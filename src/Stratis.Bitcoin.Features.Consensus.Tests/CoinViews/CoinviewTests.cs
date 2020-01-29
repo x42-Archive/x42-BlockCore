@@ -157,7 +157,7 @@ namespace Stratis.Bitcoin.Features.Consensus.Tests.CoinViews
         private UnspentOutputs CreateOutputs(int height, int outputsCount = 20)
         {
             var tx = new Transaction();
-            tx.LockTime = RandomUtils.GetUInt32(); // add randmoness
+            tx.Time = RandomUtils.GetUInt32();
 
             for (int i = 0; i < outputsCount; i++)
             {

@@ -252,7 +252,7 @@ namespace Stratis.Bitcoin.Features.PoA
 
             Transaction txNew = consensusFactory.CreateTransaction();
             txNew.Version = 1;
-            //((PosTransaction)txNew).Time = nTime;
+            txNew.Time = nTime;
             txNew.AddInput(new TxIn()
             {
                 ScriptSig = new Script(Op.GetPushOp(0), new Op()
