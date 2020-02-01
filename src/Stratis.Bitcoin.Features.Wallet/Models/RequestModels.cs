@@ -289,6 +289,15 @@ namespace Stratis.Bitcoin.Features.Wallet.Models
         public string Name { get; set; }
     }
 
+    public class ToggleColdRequest : RequestModel
+    {
+
+        [Required(ErrorMessage = "The name of the wallet is missing.")]
+        public string Name { get; set; }
+
+        public bool isColdHotWallet { get; set; }
+    }
+
     /// <summary>
     /// A class containing the necessary parameters for a transaction fee estimate request.
     /// </summary>
@@ -719,7 +728,7 @@ namespace Stratis.Bitcoin.Features.Wallet.Models
         /// </summary>
         public bool Verbose { get; set; }
     }
-    
+
     /// <summary>
     /// A class containing the necessary parameters to perform an add address book entry request.
     /// </summary>
