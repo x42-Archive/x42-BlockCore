@@ -17,7 +17,9 @@ namespace Stratis.Bitcoin.Features.Consensus
     /// <summary>
     /// A <see cref="FeatureController"/> that provides API and RPC methods from the consensus loop.
     /// </summary>
+    [ApiController]
     [ApiVersion("1")]
+    [Route("api/[controller]")]
     public class ConsensusController : FeatureController
     {
         /// <summary>Instance logger.</summary>
@@ -35,18 +37,6 @@ namespace Stratis.Bitcoin.Features.Consensus
             Guard.NotNull(chainState, nameof(chainState));
 
             this.logger = loggerFactory.CreateLogger(this.GetType().FullName);
-        }
-
-        /// <summary>
-        /// Implements the getbestblockhash RPC call.
-        /// </summary>
-        /// <returns>A <see cref="uint256"/> hash of the block at the consensus tip.</returns>
-        [ActionName("getbestblockhash")]
-        [ApiExplorerSettings(IgnoreApi = true)]
-        [ActionDescription("Get the hash of the block at the consensus tip.")]
-        public uint256 GetBestBlockHashRPC()
-        {
-            return this.ChainState.ConsensusTip?.HashBlock;
         }
 
         /// <summary>
@@ -85,11 +75,11 @@ namespace Stratis.Bitcoin.Features.Consensus
         /// <remarks>This is an API implementation of an RPC call.</remarks>
         [Route("getbestblockhash")]
         [HttpGet]
-        public IActionResult GetBestBlockHashAPI()
+        public IActionResult GetBestBlockHash()
         {
             try
             {
-                return this.Json(this.GetBestBlockHashRPC());
+                return this.Json(this.ChainState.ConsensusTip?.HashBlock);
             }
             catch (Exception e)
             {
@@ -99,41 +89,30 @@ namespace Stratis.Bitcoin.Features.Consensus
         }
 
         /// <summary>
-        /// Implements the getblockhash RPC call.
-        /// </summary>
-        /// <param name="height">The requested block height.</param>
-        /// <returns>A <see cref="uint256"/> hash of the block at the given height. <c>Null</c> if block not found.</returns>
-        [ActionName("getblockhash")]
-        [ActionDescription("Gets the hash of the block at the given height.")]
-        public uint256 GetBlockHashRPC(int height)
-        {
-            this.logger.LogDebug("GetBlockHash {0}", height);
-
-            uint256 bestBlockHash = this.ConsensusManager.Tip?.HashBlock;
-            ChainedHeader bestBlock = bestBlockHash == null ? null : this.ChainIndexer.GetHeader(bestBlockHash);
-            if (bestBlock == null)
-                return null;
-            ChainedHeader block = this.ChainIndexer.GetHeader(height);
-            uint256 hash = block == null || block.Height > bestBlock.Height ? null : block.HashBlock;
-
-            if (hash == null)
-                throw new BlockNotFoundException($"No block found at height {height}");
-
-            return hash;
-        }
-
-        /// <summary>
         /// Gets the hash of the block at a given height.
         /// </summary>
         /// <param name="height">The height of the block to get the hash for.</param>
         /// <returns>Json formatted <see cref="uint256"/> hash of the block at the given height. <c>Null</c> if block not found. Returns <see cref="IActionResult"/> formatted error if fails.</returns>
         /// <remarks>This is an API implementation of an RPC call.</remarks>
         [Route("getblockhash")]
-        public IActionResult GetBlockHashAPI([FromQuery] int height)
+        [HttpGet]
+        public IActionResult GetBlockHash([FromQuery] int height)
         {
             try
             {
-                return this.Json(this.GetBlockHashRPC(height));
+                this.logger.LogDebug("GetBlockHash {0}", height);
+
+                uint256 bestBlockHash = this.ConsensusManager.Tip?.HashBlock;
+                ChainedHeader bestBlock = bestBlockHash == null ? null : this.ChainIndexer.GetHeader(bestBlockHash);
+                if (bestBlock == null)
+                    return null;
+                ChainedHeader block = this.ChainIndexer.GetHeader(height);
+                uint256 hash = block == null || block.Height > bestBlock.Height ? null : block.HashBlock;
+
+                if (hash == null)
+                    throw new BlockNotFoundException($"No block found at height {height}");
+
+                return this.Json(hash);
             }
             catch (Exception e)
             {
