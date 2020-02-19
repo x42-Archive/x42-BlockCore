@@ -408,13 +408,15 @@ namespace Stratis.Bitcoin.IntegrationTests.Wallet
             var exception = act.Should().Throw<FlurlHttpException>().Which;
             var response = exception.Call.Response;
 
+            var result = await response.Content.ReadAsStringAsync();
+
             // Assert.
-            ErrorResponse errorResponse = JsonConvert.DeserializeObject<ErrorResponse>(await response.Content.ReadAsStringAsync());
-            List<ErrorModel> errors = errorResponse.Errors;
+            ErrorWalletCreateResponse errorResponse = JsonConvert.DeserializeObject<ErrorWalletCreateResponse>(result);
+            WalletCreationErrors errors = errorResponse.Errors;
 
             response.StatusCode.Should().Be(HttpStatusCode.BadRequest);
-            errors.Should().ContainSingle();
-            errors.First().Message.Should().Be("A password is required.");
+            errors.Password.Should().ContainSingle();
+            errors.Password.First().Should().Be("A password is required.");
         }
 
         [Fact]
