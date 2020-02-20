@@ -176,7 +176,7 @@ namespace Stratis.Bitcoin.Features.Wallet.Controllers
         /// Signs a message and returns the signature.
         /// </summary>
         /// <param name="request">The object containing the parameters used to sign a message.</param>
-        /// <returns>A JSON object containing the generated signature.</returns>
+        /// <returns>A JSON object containing the generated signature and the address used to sign.</returns>
         [Route("signmessage")]
         [HttpPost]
         public IActionResult SignMessage([FromBody]SignMessageRequest request)
@@ -191,7 +191,7 @@ namespace Stratis.Bitcoin.Features.Wallet.Controllers
 
             try
             {
-                string signature = this.walletManager.SignMessage(request.Password, request.WalletName, request.AccountName, request.ExternalAddress, request.Message);
+                SignMessageResult signature = this.walletManager.SignMessage(request.Password, request.WalletName, request.AccountName, request.ExternalAddress, request.Message);
                 return this.Json(signature);
             }
             catch (Exception e)
@@ -421,9 +421,9 @@ namespace Stratis.Bitcoin.Features.Wallet.Controllers
         /// </summary>
         /// <param name="request">The name of the wallet to get the information for, and if it's a cold wallet or not.</param>
         /// <returns>A JSON true.</returns>
-        [Route("toggle-cold")]
-        [HttpGet]
-        public IActionResult ToggleCold([FromQuery] ToggleColdRequest request)
+        [Route("setcoldhotstate")]
+        [HttpPost]
+        public IActionResult SetColdHotState([FromBody] ToggleColdRequest request)
         {
             Guard.NotNull(request, nameof(request));
 
@@ -439,7 +439,7 @@ namespace Stratis.Bitcoin.Features.Wallet.Controllers
                 wallet.isColdHotWallet = request.isColdHotWallet;
                 this.walletManager.SaveWallet(wallet);
 
-                return this.Json(true);
+                return this.Ok();
             }
             catch (Exception e)
             {

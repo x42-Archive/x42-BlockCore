@@ -13,6 +13,7 @@ using Stratis.Bitcoin.AsyncWork;
 using Stratis.Bitcoin.Configuration;
 using Stratis.Bitcoin.Features.Wallet.Broadcasting;
 using Stratis.Bitcoin.Features.Wallet.Interfaces;
+using Stratis.Bitcoin.Features.Wallet.Models;
 using Stratis.Bitcoin.Interfaces;
 using Stratis.Bitcoin.Utilities;
 using Stratis.Bitcoin.Utilities.Extensions;
@@ -311,7 +312,7 @@ namespace Stratis.Bitcoin.Features.Wallet
         }
 
         /// <inheritdoc />
-        public string SignMessage(string password, string walletName, string accountName, string externalAddress, string message)
+        public SignMessageResult SignMessage(string password, string walletName, string accountName, string externalAddress, string message)
         {
             Guard.NotEmpty(password, nameof(password));
             Guard.NotEmpty(walletName, nameof(walletName));
@@ -325,7 +326,11 @@ namespace Stratis.Bitcoin.Features.Wallet
             // Sign the message.
             HdAddress hdAddress = wallet.GetAddress(externalAddress, account => account.Name.Equals(accountName));
             Key privateKey = wallet.GetExtendedPrivateKeyForAddress(password, hdAddress).PrivateKey;
-            return privateKey.SignMessage(message);
+            return new SignMessageResult()
+            {
+                Signature = privateKey.SignMessage(message),
+                SignedAddress = hdAddress.Address
+            };
         }
 
         /// <inheritdoc />

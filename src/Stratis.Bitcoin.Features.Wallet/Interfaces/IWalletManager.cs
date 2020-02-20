@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using NBitcoin;
 using NBitcoin.BuilderExtensions;
+using Stratis.Bitcoin.Features.Wallet.Models;
 
 namespace Stratis.Bitcoin.Features.Wallet.Interfaces
 {
@@ -88,7 +89,7 @@ namespace Stratis.Bitcoin.Features.Wallet.Interfaces
         /// <param name="externalAddress">Address to use to sign.</param>
         /// <param name="message">Message to sign.</param>
         /// <returns>The generated signature.</returns>
-        string SignMessage(string password, string walletName, string accountName, string externalAddress, string message);
+        SignMessageResult SignMessage(string password, string walletName, string accountName, string externalAddress, string message);
 
         /// <summary>
         /// Verifies the signed message.
