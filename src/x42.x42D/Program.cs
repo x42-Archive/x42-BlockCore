@@ -17,6 +17,7 @@ using Stratis.Bitcoin.Features.SignalR.Events;
 using Stratis.Bitcoin.Networks;
 using Stratis.Bitcoin.Utilities;
 using Stratis.Features.Diagnostic;
+using x42.Features.xServer;
 
 namespace x42.x42D
 {
@@ -40,7 +41,8 @@ namespace x42.x42D
                     .AddPowPosMining()
                     .UseApi()
                     .AddRPC()
-                    .UseDiagnosticFeature();
+                    .UseDiagnosticFeature()
+                    .UsexServer();
 
                 if (nodeSettings.EnableSignalR)
                 {
