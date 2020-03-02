@@ -178,6 +178,13 @@ namespace Stratis.Bitcoin.Networks
                 new NetworkAddress(IPAddress.Parse("63.32.82.169"), 52342),
             };
 
+            this.XServerSeedNodes = new List<NetworkXServer>
+            {
+                new NetworkXServer("34.255.35.42", 4242),
+                new NetworkXServer("52.211.235.48", 4242),
+                new NetworkXServer("63.32.82.169", 4242),
+            };
+
             this.StandardScriptsRegistry = new StratisStandardScriptsRegistry();
 
             // 64 below should be changed to TargetSpacingSeconds when we move that field.

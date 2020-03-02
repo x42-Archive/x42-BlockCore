@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using NBitcoin;
 using NBitcoin.BouncyCastle.Math;
 using NBitcoin.DataEncoders;
+using NBitcoin.Protocol;
 using Stratis.Bitcoin.Networks.Deployments;
 using Stratis.Bitcoin.Networks.Policies;
 
@@ -142,6 +144,13 @@ namespace Stratis.Bitcoin.Networks
 
             string[] seedNodes = { "63.32.82.169" };
             this.SeedNodes = ConvertToNetworkAddresses(seedNodes, this.DefaultPort).ToList();
+
+            this.XServerSeedNodes = new List<NetworkXServer>
+            {
+                new NetworkXServer("34.255.35.42", 4243),
+                new NetworkXServer("52.211.235.48", 4243),
+                new NetworkXServer("63.32.82.169", 4243),
+            };
 
             this.StandardScriptsRegistry = new StratisStandardScriptsRegistry();
 
