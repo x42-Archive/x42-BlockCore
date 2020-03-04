@@ -141,7 +141,7 @@ namespace x42.Features.xServer
 
                 var client = new RestClient(GetAddress(networkAddress));
                 var registerRestRequest = new RestRequest("/register", Method.POST);
-                var request = JsonConvert.SerializeObject(registerRestRequest);
+                var request = JsonConvert.SerializeObject(registerRequest);
                 registerRestRequest.AddParameter("application/json; charset=utf-8", request, ParameterType.RequestBody);
                 registerRestRequest.RequestFormat = DataFormat.Json;
 
