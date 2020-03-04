@@ -140,15 +140,15 @@ namespace x42.Features.xServer
                 }
 
                 var client = new RestClient(GetAddress(networkAddress));
-                var topXServersRequest = new RestRequest("/register", Method.POST);
-                var request = JsonConvert.SerializeObject(registerRequest);
-                topXServersRequest.AddParameter("application/json; charset=utf-8", request, ParameterType.RequestBody);
-                topXServersRequest.RequestFormat = DataFormat.Json;
+                var registerRestRequest = new RestRequest("/register", Method.POST);
+                var request = JsonConvert.SerializeObject(registerRestRequest);
+                registerRestRequest.AddParameter("application/json; charset=utf-8", request, ParameterType.RequestBody);
+                registerRestRequest.RequestFormat = DataFormat.Json;
 
-                var topXServerResult = client.Execute<RegisterResult>(topXServersRequest);
-                if (topXServerResult.StatusCode == HttpStatusCode.OK)
+                var registerResult = client.Execute<RegisterResult>(registerRestRequest);
+                if (registerResult.StatusCode == HttpStatusCode.OK)
                 {
-                    result = topXServerResult.Data;
+                    result = registerResult.Data;
                     break;
                 }
 
