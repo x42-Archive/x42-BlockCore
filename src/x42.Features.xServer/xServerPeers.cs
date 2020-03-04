@@ -24,11 +24,11 @@ namespace x42.Features.xServer
         /// <summary>
         /// Protects access to the list of xServer Peers.
         /// </summary>
-        private readonly object addxServerPeersLock;
+        private readonly object xServerPeersLock;
 
         public xServerPeers(string filePath)
         {
-            this.addxServerPeersLock = new object();
+            this.xServerPeersLock = new object();
 
             this.Path = filePath;
             if (!Directory.Exists(System.IO.Path.GetDirectoryName(filePath)))
@@ -49,7 +49,7 @@ namespace x42.Features.xServer
             using (var peersFile = new StreamReader(this.Path))
             {
                 string peersData = peersFile.ReadToEnd();
-                lock (this.addxServerPeersLock)
+                lock (this.xServerPeersLock)
                 {
                     this.Peers = JsonConvert.DeserializeObject<List<xServerPeer>>(peersData);
                 }
@@ -61,7 +61,7 @@ namespace x42.Features.xServer
         /// </summary>
         public List<xServerPeer> GetPeers()
         {
-            lock (this.addxServerPeersLock)
+            lock (this.xServerPeersLock)
             {
                 return this.Peers.ToList();
             }
@@ -72,7 +72,7 @@ namespace x42.Features.xServer
         /// </summary>
         public void ReplacePeers(List<xServerPeer> peers)
         {
-            lock (this.addxServerPeersLock)
+            lock (this.xServerPeersLock)
             {
                 this.Peers = peers;
             }
@@ -86,7 +86,7 @@ namespace x42.Features.xServer
             using (StreamWriter file = File.CreateText(this.Path))
             {
                 var serializer = new JsonSerializer();
-                lock (this.addxServerPeersLock)
+                lock (this.xServerPeersLock)
                 {
                     serializer.Serialize(file, this.Peers);
                 }

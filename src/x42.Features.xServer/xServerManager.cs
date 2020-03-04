@@ -45,7 +45,7 @@ namespace x42.Features.xServer
         /// <summary>
         /// Protects access to the list of xServer Peers.
         /// </summary>
-        private readonly object addxServerPeersLock;
+        private readonly object xServerPeersLock;
 
         /// <summary>
         /// Defines the data folders of the system.
@@ -105,7 +105,7 @@ namespace x42.Features.xServer
             string path = Path.Combine(this.dataFolders.xServerAppsPath, xServerPeersFileName);
             this.xServerPeerList = new xServerPeers(path);
 
-            this.addxServerPeersLock = new object();
+            this.xServerPeersLock = new object();
         }
 
         /// <inheritdoc />
@@ -200,7 +200,7 @@ namespace x42.Features.xServer
                                     Version = ping.Version,
                                     ResponseTime = pingResponseTime.ElapsedMilliseconds
                                 };
-                                lock (this.addxServerPeersLock)
+                                lock (this.xServerPeersLock)
                                 {
                                     var peersList = xServerPeerList.GetPeers();
                                     int peerIndex = peersList.FindIndex(p => p.Name == peer.Name && p.Address == peer.Address);
