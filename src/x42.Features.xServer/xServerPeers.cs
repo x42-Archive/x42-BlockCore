@@ -1,8 +1,8 @@
 ﻿using System.IO;
 using Newtonsoft.Json;
-using System.Collections.Generic;
 using System.Threading.Tasks;
-using System.Collections.Concurrent;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace x42.Features.xServer
 {
@@ -11,14 +11,29 @@ namespace x42.Features.xServer
     /// </summary>
     public class xServerPeers
     {
-        private string XServerPeersFilePath { get; set; }
+        // <summary>
+        /// The xServer path to peers file.
+        /// </summary>
+        public string Path { get; set; }
+
+        /// <summary>
+        /// The xServer peers file.
+        /// </summary>
+        private List<xServerPeer> Peers = new List<xServerPeer>();
+
+        /// <summary>
+        /// Protects access to the list of xServer Peers.
+        /// </summary>
+        private readonly object addxServerPeersLock;
 
         public xServerPeers(string filePath)
         {
-            this.XServerPeersFilePath = filePath;
-            if (!Directory.Exists(Path.GetDirectoryName(filePath)))
+            this.addxServerPeersLock = new object();
+
+            this.Path = filePath;
+            if (!Directory.Exists(System.IO.Path.GetDirectoryName(filePath)))
             {
-                Directory.CreateDirectory(Path.GetDirectoryName(filePath));
+                Directory.CreateDirectory(System.IO.Path.GetDirectoryName(filePath));
             }
             else if (File.Exists(filePath))
             {
@@ -27,19 +42,39 @@ namespace x42.Features.xServer
         }
 
         /// <summary>
-        /// The xServer peers file.
-        /// </summary>
-        public ConcurrentBag<xServerPeer> Peers = new ConcurrentBag<xServerPeer>();
-
-        /// <summary>
         /// Loads the saved xServer peers file from the specified stream.
         /// </summary>
         private void Load()
         {
-            using (var peersFile = new StreamReader(this.XServerPeersFilePath))
+            using (var peersFile = new StreamReader(this.Path))
             {
                 string peersData = peersFile.ReadToEnd();
-                this.Peers = JsonConvert.DeserializeObject<ConcurrentBag<xServerPeer>>(peersData);
+                lock (this.addxServerPeersLock)
+                {
+                    this.Peers = JsonConvert.DeserializeObject<List<xServerPeer>>(peersData);
+                }
+            }
+        }
+
+        /// <summary>
+        /// Get's a copy of the peers list.
+        /// </summary>
+        public List<xServerPeer> GetPeers()
+        {
+            lock (this.addxServerPeersLock)
+            {
+                return this.Peers.ToList();
+            }
+        }
+
+        /// <summary>
+        /// Replaces peers list with list provided.
+        /// </summary>
+        public void ReplacePeers(List<xServerPeer> peers)
+        {
+            lock (this.addxServerPeersLock)
+            {
+                this.Peers = peers;
             }
         }
 
@@ -48,11 +83,15 @@ namespace x42.Features.xServer
         /// </summary>
         public Task Save()
         {
-            using (StreamWriter file = File.CreateText(this.XServerPeersFilePath))
+            using (StreamWriter file = File.CreateText(this.Path))
             {
                 var serializer = new JsonSerializer();
-                serializer.Serialize(file, this.Peers);
+                lock (this.addxServerPeersLock)
+                {
+                    serializer.Serialize(file, this.Peers);
+                }
             }
+
             return Task.CompletedTask;
         }
     }

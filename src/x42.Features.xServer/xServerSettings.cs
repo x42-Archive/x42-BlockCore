@@ -5,6 +5,7 @@ using System.Net;
 using System.Text;
 using Microsoft.Extensions.Logging;
 using NBitcoin;
+using NBitcoin.Protocol;
 using Stratis.Bitcoin.Configuration;
 using Stratis.Bitcoin.Utilities;
 using Stratis.Bitcoin.Utilities.Extensions;
@@ -21,22 +22,28 @@ namespace x42.Features.xServer
 
         /// <summary>List of end points that the node should try to connect to.</summary>
         /// <remarks>All access should be protected under <see cref="addxServerNodeLock"/></remarks>
-        private readonly List<IPEndPoint> addxServerNode;
+        private readonly List<NetworkXServer> addxServerNode;
 
         /// <summary>
         /// Protects access to the list of addnode endpoints.
         /// </summary>
         private readonly object addxServerNodeLock;
 
+        /// <summary>The network the node is running on.</summary>
+        private readonly Network network;
+
         /// <summary>
         /// Initializes an instance of the object from the node configuration.
         /// </summary>
         /// <param name="nodeSettings">The node configuration.</param>
-        public xServerSettings(NodeSettings nodeSettings)
+        /// <param name="network">The network managment.</param>
+        public xServerSettings(NodeSettings nodeSettings, Network network)
         {
             Guard.NotNull(nodeSettings, nameof(nodeSettings));
+            Guard.NotNull(network, nameof(network));
 
             this.logger = nodeSettings.LoggerFactory.CreateLogger(typeof(xServerSettings).FullName);
+            this.network = network;
 
             TextFileConfiguration config = nodeSettings.ConfigReader;
 
@@ -44,21 +51,25 @@ namespace x42.Features.xServer
 
             lock (this.addxServerNodeLock)
             {
-                this.addxServerNode = new List<IPEndPoint>();
+                this.addxServerNode = new List<NetworkXServer>();
             }
 
             try
             {
-                foreach (IPEndPoint addNode in config.GetAll("addxservernode", this.logger).Select(c => c.ToIPEndPoint(nodeSettings.Network.DefaultPort)))
+                foreach (NetworkXServer addNode in config.GetAll("addxservernode", this.logger).Select(c => c.ToIPXServerEndPoint(4242, false)))
+                {
                     this.AddAddNode(addNode);
+                }
             }
             catch (FormatException)
             {
                 throw new ConfigurationException("Invalid 'addxservernode' parameter.");
             }
+
+            AddSeedNodes();
         }
 
-        public void AddAddNode(IPEndPoint addNode)
+        public void AddAddNode(NetworkXServer addNode)
         {
             lock (this.addxServerNodeLock)
             {
@@ -66,13 +77,30 @@ namespace x42.Features.xServer
             }
         }
 
-        public void RemoveAddNode(IPEndPoint addNode)
+        public void RemoveAddNode(NetworkXServer addNode)
         {
             lock (this.addxServerNodeLock)
             {
                 this.addxServerNode.Remove(addNode);
             }
         }
+
+        public List<NetworkXServer> RetrieveNodes()
+        {
+            lock (this.addxServerNodeLock)
+            {
+                return this.addxServerNode;
+            }
+        }
+
+        /// <summary>
+        /// Add peers to the address manager from the network's seed nodes.
+        /// </summary>
+        private void AddSeedNodes()
+        {
+            this.addxServerNode.AddRange(this.network.XServerSeedNodes);
+        }
+
 
         /// <summary>Prints the help information on how to configure the block store settings to the logger.</summary>
         public static void PrintHelp(Network network)
