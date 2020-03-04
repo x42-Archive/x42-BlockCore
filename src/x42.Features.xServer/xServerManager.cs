@@ -2,10 +2,11 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
-using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
+using NBitcoin.Protocol;
+using Newtonsoft.Json;
 using RestSharp;
 using Stratis.Bitcoin.AsyncWork;
 using Stratis.Bitcoin.Configuration;
@@ -124,6 +125,40 @@ namespace x42.Features.xServer
         public void Stop()
         {
             this.xServerDiscoveryLoop?.Dispose();
+        }
+
+        /// <inheritdoc />
+        public RegisterResult RegisterXServer(RegisterRequest registerRequest)
+        {
+            var result = new RegisterResult();
+            foreach(var networkAddress in this.xServerSettings.RetrieveNodes())
+            {
+                if (this.nodeLifetime.ApplicationStopping.IsCancellationRequested)
+                {
+                    result.ResultMessage = "Application closing.";
+                    break;
+                }
+
+                var client = new RestClient(GetAddress(networkAddress));
+                var topXServersRequest = new RestRequest("/register", Method.POST);
+                var request = JsonConvert.SerializeObject(registerRequest);
+                topXServersRequest.AddParameter("application/json; charset=utf-8", request, ParameterType.RequestBody);
+                topXServersRequest.RequestFormat = DataFormat.Json;
+
+                var topXServerResult = client.Execute<RegisterResult>(topXServersRequest);
+                if (topXServerResult.StatusCode == HttpStatusCode.OK)
+                {
+                    result = topXServerResult.Data;
+                    break;
+                }
+
+            };
+            return result;
+        }
+
+        private string GetAddress(NetworkXServer networkAddress)
+        {
+            return $"{(networkAddress.IsSSL ? "https" : "http")}://{networkAddress.PublicAddress}:{networkAddress.Port}";
         }
 
         private async Task XServerDiscoveryAsync(xServerPeers xServerPeerList)

@@ -1,6 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using System.Collections.Generic;
+using x42.Features.xServer.Models;
 
 namespace x42.Features.xServer.Interfaces
 {
@@ -23,5 +22,10 @@ namespace x42.Features.xServer.Interfaces
         /// A count of connected xServer seeds.
         /// </summary>
         List<xServerPeer> ConnectedSeeds { get; }
+
+        /// <summary>
+        /// Registers the xServer and returns the result.
+        /// </summary>
+        RegisterResult RegisterXServer(RegisterRequest registerRequest);
     }
 }

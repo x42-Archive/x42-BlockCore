@@ -5,6 +5,7 @@ using Microsoft.Extensions.Logging;
 using Stratis.Bitcoin.Utilities;
 using Stratis.Bitcoin.Utilities.JsonErrors;
 using Stratis.Bitcoin.Utilities.ModelStateErrors;
+using x42.Features.xServer.Interfaces;
 using x42.Features.xServer.Models;
 
 namespace x42.Features.xServer.Controllers
@@ -13,16 +14,23 @@ namespace x42.Features.xServer.Controllers
     [ApiController]
     [ApiVersion("1")]
     [Route("api/[controller]")]
-    public class xServerController : Controller
+    public class XServerController : Controller
     {
         /// <summary>Instance logger.</summary>
         private readonly ILogger logger;
 
-        public xServerController(ILoggerFactory loggerFactory)
+        /// <summary>
+        /// Manager for xServers
+        /// </summary>
+        private readonly IxServerManager xServerManager;
+
+        public XServerController(ILoggerFactory loggerFactory, IxServerManager xServerManager)
         {
             Guard.NotNull(loggerFactory, nameof(loggerFactory));
+            Guard.NotNull(xServerManager, nameof(IxServerManager));
 
             this.logger = loggerFactory.CreateLogger(this.GetType().FullName);
+            this.xServerManager = xServerManager;
         }
 
         /// <summary>
@@ -31,7 +39,7 @@ namespace x42.Features.xServer.Controllers
         /// <returns>Returns the stats of the xServer network.</returns>
         [Route("getxserverstats")]
         [HttpGet]
-        public IActionResult GetxServerStats()
+        public IActionResult GetXServerStats()
         {
             if (!this.ModelState.IsValid)
             {
@@ -41,12 +49,38 @@ namespace x42.Features.xServer.Controllers
             try
             {
                 //TODO: Get Server Stats
-                var serverStats = new GetxServerStatsResult()
+                var serverStats = new GetXServerStatsResult()
                 {
                     Connected = 0
                 };
 
                 return this.Json(serverStats);
+            }
+            catch (Exception e)
+            {
+                this.logger.LogError("Exception occurred: {0}", e.ToString());
+                return ErrorHelpers.BuildErrorResponse(HttpStatusCode.BadRequest, e.Message, e.ToString());
+            }
+        }
+
+        /// <summary>
+        /// Will broadcast the registration for xServer
+        /// </summary>
+        /// <param name="registerRequest">The object with all of the nessesary data to register a xServer.</param>
+        /// <returns>Returns true if the registration was successfully recived, otherwise false with a reason.</returns>
+        [Route("registerxserver")]
+        [HttpPost]
+        public IActionResult RegisterXServer([FromBody] RegisterRequest registerRequest)
+        {
+            if (!this.ModelState.IsValid)
+            {
+                return ModelStateErrors.BuildErrorResponse(this.ModelState);
+            }
+            
+            try
+            {
+                var result = this.xServerManager.RegisterXServer(registerRequest);
+                return Json(result);
             }
             catch (Exception e)
             {
