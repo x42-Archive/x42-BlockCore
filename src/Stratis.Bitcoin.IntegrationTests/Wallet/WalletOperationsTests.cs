@@ -411,8 +411,8 @@ namespace Stratis.Bitcoin.IntegrationTests.Wallet
             var result = await response.Content.ReadAsStringAsync();
 
             // Assert.
-            ErrorWalletCreateResponse errorResponse = JsonConvert.DeserializeObject<ErrorWalletCreateResponse>(result);
-            WalletCreationErrors errors = errorResponse.Errors;
+            ErrorResponseLists errorResponse = JsonConvert.DeserializeObject<ErrorResponseLists>(await response.Content.ReadAsStringAsync());
+            ErrorModel errors = errorResponse.Errors;
 
             response.StatusCode.Should().Be(HttpStatusCode.BadRequest);
             errors.Password.Should().ContainSingle();
@@ -712,12 +712,13 @@ namespace Stratis.Bitcoin.IntegrationTests.Wallet
             var response = exception.Call.Response;
 
             // Assert.
-            ErrorResponse errorResponse = JsonConvert.DeserializeObject<ErrorResponse>(await response.Content.ReadAsStringAsync());
-            List<ErrorModel> errors = errorResponse.Errors;
+            ErrorResponseLists errorResponse = JsonConvert.DeserializeObject<ErrorResponseLists>(await response.Content.ReadAsStringAsync());
+            ErrorModel errors = errorResponse.Errors;
 
             response.StatusCode.Should().Be(HttpStatusCode.BadRequest);
-            errors.Should().ContainSingle();
-            errors.First().Message.Should().Be("A mnemonic is required.");
+            errors.Mnemonic.Should().ContainSingle();
+            errors.Mnemonic.First().Should().Be("A mnemonic is required.");
+
         }
 
         [Fact]
@@ -738,12 +739,12 @@ namespace Stratis.Bitcoin.IntegrationTests.Wallet
             var response = exception.Call.Response;
 
             // Assert.
-            ErrorResponse errorResponse = JsonConvert.DeserializeObject<ErrorResponse>(await response.Content.ReadAsStringAsync());
-            List<ErrorModel> errors = errorResponse.Errors;
+            ErrorResponseLists errorResponse = JsonConvert.DeserializeObject<ErrorResponseLists>(await response.Content.ReadAsStringAsync());
+            ErrorModel errors = errorResponse.Errors;
 
             response.StatusCode.Should().Be(HttpStatusCode.BadRequest);
-            errors.Should().ContainSingle();
-            errors.First().Message.Should().Be("A password is required.");
+            errors.Password.Should().ContainSingle();
+            errors.Password.First().Should().Be("A password is required.");
         }
 
         [Fact]
@@ -1344,12 +1345,12 @@ namespace Stratis.Bitcoin.IntegrationTests.Wallet
             var exception = act.Should().Throw<FlurlHttpException>().Which;
             var response = exception.Call.Response;
 
-            ErrorResponse errorResponse = JsonConvert.DeserializeObject<ErrorResponse>(await response.Content.ReadAsStringAsync());
-            List<ErrorModel> errors = errorResponse.Errors;
+            ErrorResponseLists errorResponse = JsonConvert.DeserializeObject<ErrorResponseLists>(await response.Content.ReadAsStringAsync());
+            ErrorModel errors = errorResponse.Errors;
 
             response.StatusCode.Should().Be(HttpStatusCode.BadRequest);
-            errors.Should().ContainSingle();
-            errors.First().Message.Should().Be($"The query parameters '{nameof(BuildTransactionRequest.FeeAmount)}' and '{nameof(BuildTransactionRequest.FeeType)}' cannot be set at the same time. " +
+            errors.FeeType.Should().ContainSingle();
+            errors.FeeType.First().Should().Be($"The query parameters '{nameof(BuildTransactionRequest.FeeAmount)}' and '{nameof(BuildTransactionRequest.FeeType)}' cannot be set at the same time. " +
                     $"Please use '{nameof(BuildTransactionRequest.FeeAmount)}' if you'd like to set the fee manually, or '{nameof(BuildTransactionRequest.FeeType)}' if you want the wallet to calculate it for you.");
         }
 
@@ -1377,12 +1378,12 @@ namespace Stratis.Bitcoin.IntegrationTests.Wallet
             var exception = act.Should().Throw<FlurlHttpException>().Which;
             var response = exception.Call.Response;
 
-            ErrorResponse errorResponse = JsonConvert.DeserializeObject<ErrorResponse>(await response.Content.ReadAsStringAsync());
-            List<ErrorModel> errors = errorResponse.Errors;
+            ErrorResponseLists errorResponse = JsonConvert.DeserializeObject<ErrorResponseLists>(await response.Content.ReadAsStringAsync());
+            ErrorModel errors = errorResponse.Errors;
 
             response.StatusCode.Should().Be(HttpStatusCode.BadRequest);
-            errors.Should().ContainSingle();
-            errors.First().Message.Should().Be($"One of parameters '{nameof(BuildTransactionRequest.FeeAmount)}' and '{nameof(BuildTransactionRequest.FeeType)}' is required. " +
+            errors.FeeType.Should().ContainSingle();
+            errors.FeeType.First().Should().Be($"One of parameters '{nameof(BuildTransactionRequest.FeeAmount)}' and '{nameof(BuildTransactionRequest.FeeType)}' is required. " +
                     $"Please use '{nameof(BuildTransactionRequest.FeeAmount)}' if you'd like to set the fee manually, or '{nameof(BuildTransactionRequest.FeeType)}' if you want the wallet to calculate it for you.");
         }
 

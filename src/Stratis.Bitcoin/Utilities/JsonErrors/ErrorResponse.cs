@@ -3,17 +3,20 @@ using Newtonsoft.Json;
 
 namespace Stratis.Bitcoin.Utilities.JsonErrors
 {
-    public class ErrorResponse
+    public class ErrorResponse : ErrorResponseTypes
     {
         [JsonProperty(PropertyName = "errors")]
         public List<ErrorModel> Errors { get; set; }
     }
 
-    public class ErrorWalletCreateResponse
+    public class ErrorResponseLists : ErrorResponseTypes
     {
         [JsonProperty(PropertyName = "errors")]
-        public WalletCreationErrors Errors { get; set; }
+        public ErrorModel Errors { get; set; }
+    }
 
+    public class ErrorResponseTypes
+    {
         [JsonProperty(PropertyName = "type")]
         public string Type { get; set; }
 
@@ -27,15 +30,6 @@ namespace Stratis.Bitcoin.Utilities.JsonErrors
         public string TraceId { get; set; }
     }
 
-    public class WalletCreationErrors
-    {
-        [JsonProperty(PropertyName = "password")]
-        public List<string> Password { get; set; }
-
-        [JsonProperty(PropertyName = "name")]
-        public List<string> Name { get; set; }
-    }
-
     public class ErrorModel
     {
         [JsonProperty(PropertyName = "status")]
@@ -46,5 +40,17 @@ namespace Stratis.Bitcoin.Utilities.JsonErrors
 
         [JsonProperty(PropertyName = "description")]
         public string Description { get; set; }
+
+        [JsonProperty(PropertyName = "password")]
+        public List<string> Password { get; set; }
+
+        [JsonProperty(PropertyName = "name")]
+        public List<string> Name { get; set; }
+
+        [JsonProperty(PropertyName = "mnemonic")]
+        public List<string> Mnemonic { get; set; }
+
+        [JsonProperty(PropertyName = "feeType")]
+        public List<string> FeeType { get; set; }
     }
 }
