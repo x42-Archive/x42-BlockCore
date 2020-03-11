@@ -90,9 +90,9 @@ namespace Stratis.Bitcoin.Networks
 
             var bip9Deployments = new MainNetBIP9DeploymentsArray
             {
-                [MainNetBIP9DeploymentsArray.ColdStaking] = new BIP9DeploymentsParameters("ColdStaking", 27, BIP9DeploymentsParameters.AlwaysActive, 999999999, BIP9DeploymentsParameters.AlwaysActive),
-                [MainNetBIP9DeploymentsArray.CSV] = new BIP9DeploymentsParameters("CSV", 0, BIP9DeploymentsParameters.AlwaysActive, 999999999, BIP9DeploymentsParameters.AlwaysActive),
-                [MainNetBIP9DeploymentsArray.Segwit] = new BIP9DeploymentsParameters("Segwit", 1, BIP9DeploymentsParameters.AlwaysActive, 999999999, BIP9DeploymentsParameters.AlwaysActive)
+                [MainNetBIP9DeploymentsArray.ColdStaking] = new BIP9DeploymentsParameters("ColdStaking", 27, BIP9DeploymentsParameters.AlwaysActive, 999999999, BIP9DeploymentsParameters.DefaultMainnetThreshold),
+                [MainNetBIP9DeploymentsArray.CSV] = new BIP9DeploymentsParameters("CSV", 0, BIP9DeploymentsParameters.AlwaysActive, 999999999, BIP9DeploymentsParameters.DefaultMainnetThreshold),
+                [MainNetBIP9DeploymentsArray.Segwit] = new BIP9DeploymentsParameters("Segwit", 1, new DateTime(2020, 3, 1, 0, 0, 0, DateTimeKind.Utc), new DateTime(2021, 3, 1, 0, 0, 0, DateTimeKind.Utc), BIP9DeploymentsParameters.DefaultMainnetThreshold)
             };
 
             this.Consensus = new X42Consensus(
