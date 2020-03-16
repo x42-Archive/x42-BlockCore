@@ -48,10 +48,9 @@ namespace x42.Features.xServer.Controllers
 
             try
             {
-                //TODO: Get Server Stats
                 var serverStats = new GetXServerStatsResult()
                 {
-                    Connected = 0
+                    Connected = this.xServerManager.ConnectedSeeds.Count
                 };
 
                 return this.Json(serverStats);
