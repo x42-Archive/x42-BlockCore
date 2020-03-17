@@ -14,9 +14,6 @@ namespace Stratis.Bitcoin.Features.Miner.Controllers
     /// <summary>
     /// RPC controller for calls related to PoS minting.
     /// </summary>
-    [ApiVersion("1")]
-    [Route("api/[controller]")]
-    [Controller]
     public class StakingRpcController : FeatureController
     {
         /// <summary>Instance logger.</summary>
