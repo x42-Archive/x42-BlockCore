@@ -84,7 +84,9 @@ jobs:
 
     - name: Package (Mac)
       if: matrix.os == 'macos-latest'
-      run: zip -r ${{env.RELEASE_NAME}} ./bin/publish/
+      run: |
+        cd ./bin/publish/
+        zip -r ${{env.RELEASE_NAME}} *
 
     - name: Release
       uses: DennisAMenace/action-release@master
